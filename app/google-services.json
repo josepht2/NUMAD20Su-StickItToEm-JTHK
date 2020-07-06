@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "845753312441",
+    "firebase_url": "https://numad20su-stickittoem-jthk.firebaseio.com",
+    "project_id": "numad20su-stickittoem-jthk",
+    "storage_bucket": "numad20su-stickittoem-jthk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845753312441:android:a774506205eb98cb9fa768",
+        "android_client_info": {
+          "package_name": "nu.mad.numad20su_stickittoem_jthk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845753312441-bvd4i4djf7vnu8bi5v91q62vr4sjp8hj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1g6NhcJFIS7Oj7adTYlzcrqYOm5dUywk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845753312441-bvd4i4djf7vnu8bi5v91q62vr4sjp8hj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
