@@ -7,11 +7,12 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_first_fragment">Hello</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <!-- Strings used for Stick It To Em -->
     <string name="register_dialog_title">Register Your Phone</string>
     <string name="register_dialog_username">Username</string>
     <string name="register">Register</string>
+    <string name="firstfragment_numbersent">Number of Stickers Sent:</string>
 </resources>
