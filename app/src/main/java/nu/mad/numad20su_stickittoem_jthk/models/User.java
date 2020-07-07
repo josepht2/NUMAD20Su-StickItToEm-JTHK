@@ -7,7 +7,7 @@ public class User {
     public String username;
     public String token;
     public int numberOfStickersSent;
-    public ArrayList<StickerUserPair> objectsReceivedMappings;
+    public ArrayList<StickerUserPair> stickerUserPairs;
 
 
     public User() {
@@ -18,6 +18,9 @@ public class User {
         this.username = username;
         this.token = token;
         this.numberOfStickersSent = 0;
-        objectsReceivedMappings = new ArrayList<>();
+        this.stickerUserPairs = new ArrayList<>();
+
+        // add a welcome smiley
+        this.stickerUserPairs.add(new StickerUserPair("Welcome!", "smile"));
     }
 }

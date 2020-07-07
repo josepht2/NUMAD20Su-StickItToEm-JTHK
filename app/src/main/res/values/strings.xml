@@ -14,4 +14,8 @@
     <string name="register_dialog_title">Register Your Phone</string>
     <string name="register_dialog_username">Username</string>
     <string name="register">Register</string>
+    <string name="smile">🙂</string>
+    <string name="sad">🙁</string>
+    <string name="laugh">😀</string>
+    <string name="enter_username_to_send_to">Enter Username to Send to</string>
 </resources>
