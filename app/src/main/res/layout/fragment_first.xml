@@ -7,57 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".FirstFragment">
 
-    <Button
-        android:id="@+id/button3"
+    <TextView
+        android:id="@+id/textview_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="164dp"
-        android:text="@string/smile"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
-        app:layout_constraintHorizontal_bias="0.292"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="296dp"
-        android:text="@string/laugh"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/hello_first_fragment"
+        app:layout_constraintBottom_toTopOf="@id/firstfragment_numbersent_textview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText"
-        app:layout_constraintVertical_bias="0.97" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="296dp"
-        android:text="@string/sad"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.62"
-        app:layout_constraintStart_toEndOf="@+id/button4"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText"
-        app:layout_constraintVertical_bias="0.97" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:hint="@string/enter_username_to_send_to"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/firstfragment_numbersent_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/firstfragment_numbersent"
+        app:layout_constraintBottom_toTopOf="@id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+
+    <Button
+        android:id="@+id/button_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstfragment_numbersent_textview" />
 </androidx.constraintlayout.widget.ConstraintLayout>
