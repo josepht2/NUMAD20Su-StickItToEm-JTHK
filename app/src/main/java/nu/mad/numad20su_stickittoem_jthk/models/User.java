@@ -5,17 +5,19 @@ import java.util.ArrayList;
 public class User {
 
     public String username;
-    public Integer numObjectsSent;
+    public String token;
+    public int numberOfStickersSent;
     public ArrayList<Integer> objectsReceivedMappings;
 
 
-    public User(){
+    public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String username) {
+    public User(String username, String token) {
         this.username = username;
-        this.numObjectsSent = 0;
-        this.objectsReceivedMappings = new ArrayList<>();
+        this.token = token;
+        this.numberOfStickersSent = 0;
+        objectsReceivedMappings = new ArrayList<>();
     }
 }
