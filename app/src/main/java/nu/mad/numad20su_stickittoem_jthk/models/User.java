@@ -7,7 +7,7 @@ public class User {
     public String username;
     public String token;
     public int numberOfStickersSent;
-    public ArrayList<Integer> objectsReceivedMappings;
+    public ArrayList<StickerUserPair> objectsReceivedMappings;
 
 
     public User() {
