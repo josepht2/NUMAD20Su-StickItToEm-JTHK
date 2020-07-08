@@ -1,11 +1,14 @@
 package nu.mad.numad20su_stickittoem_jthk;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +26,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 
 import nu.mad.numad20su_stickittoem_jthk.models.StickerUserPair;
 import nu.mad.numad20su_stickittoem_jthk.models.User;
@@ -123,11 +134,11 @@ public class FirstFragment extends Fragment {
                                                     new ChildEventListener() {
                                                         @Override
                                                         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                                                            StickerUserPair addedStickerUserPair = snapshot.getValue(StickerUserPair.class);
-                                                            if (addedStickerUserPair != null) {
-                                                                Snackbar.make(view, "You got a " + addedStickerUserPair.stickerName + " from " + addedStickerUserPair.sentByUsername, Snackbar.LENGTH_LONG)
-                                                                        .setAction("Action", null).show();
-                                                            }
+//                                                            StickerUserPair addedStickerUserPair = snapshot.getValue(StickerUserPair.class);
+//                                                            if (addedStickerUserPair != null) {
+//                                                                Snackbar.make(view, "You got a " + addedStickerUserPair.stickerName + " from " + addedStickerUserPair.sentByUsername, Snackbar.LENGTH_LONG)
+//                                                                        .setAction("Action", null).show();
+//                                                            }
                                                         }
 
                                                         @Override
@@ -182,7 +193,7 @@ public class FirstFragment extends Fragment {
     private View.OnClickListener sendStickerListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            StickerUserPair stickerUserPair =
+            final StickerUserPair stickerUserPair =
                     new StickerUserPair(user.username, "");
             switch (view.getId()) {
                 case R.id.smile_button:
@@ -206,6 +217,21 @@ public class FirstFragment extends Fragment {
                     break;
             }
 
+            databaseReference.child("users")
+                    .child(String.valueOf(usernameToSendTo.getText()))
+                    .child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String deviceToSendTo = snapshot.getValue().toString();
+                    sendStickerToDevice(deviceToSendTo, stickerUserPair.stickerName);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
             // update number of stickers sent
             databaseReference.child("users").child(user.username)
                     .child("numberOfStickersSent").setValue(user.numberOfStickersSent + 1);
@@ -215,5 +241,44 @@ public class FirstFragment extends Fragment {
     private void registerUser(String token) {
         DialogFragment dialogFragment = new RegisterDialogFragment(token);
         dialogFragment.show(getParentFragmentManager(), "RegisterDialogFragment");
+    }
+
+    private void sendStickerToDevice(final String deviceToSendTo, final String sticker) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jPayload = new JSONObject();
+                JSONObject jNotification = new JSONObject();
+                JSONObject jData = new JSONObject();
+
+                try {
+                    jNotification.put("title", "New Sticker");
+                    jNotification.put("body", sticker);
+                    jNotification.put("sound", "default");
+                    jNotification.put("badge", "1");
+
+                    jData.put("title", "New Sticker");
+                    jData.put("content", sticker);
+
+                    jPayload.put("to", deviceToSendTo);
+                    jPayload.put("priority", "high");
+                    jPayload.put("notification", jNotification);
+                    jPayload.put("data", jData);
+
+                    URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Authorization", MainActivity.SERVER_KEY);
+                    connection.setRequestProperty("Content-Type", "application/json");
+                    connection.setDoOutput(true);
+
+                    OutputStream outputStream = connection.getOutputStream();
+                    outputStream.write(jPayload.toString().getBytes());
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

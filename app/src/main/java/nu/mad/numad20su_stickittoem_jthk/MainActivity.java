@@ -29,6 +29,8 @@ import nu.mad.numad20su_stickittoem_jthk.models.User;
 
 public class MainActivity extends AppCompatActivity {
 
+    protected static final String SERVER_KEY = "key=AAAAxOrTZLk:APA91bFZDOlilw3TN4GoVctPtcHHf4yHFqmV0oseXWgUKlli5tLrb_SnVjKunonV65A0K2UsLstMuZ25h6-GsGuRMQPZnzzdCA0alGAG-OvPmx0TqE7W249QIHP6fFIHComImLjAxNKM";
+
     private DatabaseReference databaseReference;
     protected static User user;
 
