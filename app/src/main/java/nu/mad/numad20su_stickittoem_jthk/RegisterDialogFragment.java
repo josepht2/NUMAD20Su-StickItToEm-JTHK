@@ -68,7 +68,7 @@ public class RegisterDialogFragment extends DialogFragment {
                         boolean isEmptyUsername = TextUtils.isEmpty(usernameEditText.getText());
 
                         if (isEmptyUsername) {
-                            usernameEditText.setError("Link Name is required.");
+                            usernameEditText.setError("Please enter a username");
                         } else {
                             String username = usernameEditText.getText().toString();
                             User user = new User(username, token);
@@ -78,8 +78,6 @@ public class RegisterDialogFragment extends DialogFragment {
                             // resource: https://firebase.google.com/docs/database/android/read-and-write
                             databaseReference.child("users").child(username).setValue(user);
                             // resource: https://stackoverflow.com/questions/20702333/refresh-fragment-at-reload
-//                            getParentFragmentManager().beginTransaction()
-//                                    .detach(mainActivity).attach(mainActivity).commit();
                             alertDialog.dismiss();
                             Snackbar.make(getActivity().findViewById(R.id.firstfragment_layout),
                                     "Successfully registered.", Snackbar.LENGTH_LONG).show();
