@@ -49,7 +49,7 @@ public class FirstFragment extends Fragment {
         usernameTextView = view.findViewById(R.id.textview_first);
         numberSentTextView = view.findViewById(R.id.firstfragment_numbersent_textview);
         usernameToSendTo = view.findViewById(R.id.usernameToSendToTextInput);
-        
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(
@@ -130,8 +130,10 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                if (MainActivity.user != null) {
+                    NavHostFragment.findNavController(FirstFragment.this)
+                            .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                }
             }
         });
 

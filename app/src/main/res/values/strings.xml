@@ -19,4 +19,5 @@
     <string name="laugh">😀</string>
     <string name="enter_username_to_send_to">Enter Username to Send to</string>
     <string name="firstfragment_numbersent">Number of Stickers Sent:</string>
+    <string name="stickers_received">Stickers Received</string>
 </resources>
