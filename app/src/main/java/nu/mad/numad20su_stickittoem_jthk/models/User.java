@@ -1,13 +1,14 @@
 package nu.mad.numad20su_stickittoem_jthk.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
 
     public String username;
     public String token;
     public int numberOfStickersSent;
-    public ArrayList<StickerUserPair> stickerUserPairs;
+    public HashMap<String, StickerUserPair> stickerUserPairs;
 
 
     public User() {
@@ -18,9 +19,9 @@ public class User {
         this.username = username;
         this.token = token;
         this.numberOfStickersSent = 0;
-        this.stickerUserPairs = new ArrayList<>();
+        this.stickerUserPairs = new HashMap<>();
 
         // add a welcome smiley
-        this.stickerUserPairs.add(new StickerUserPair("Welcome!", "smile"));
+        this.stickerUserPairs.put("FirstTest", new StickerUserPair("Welcome From Devs!", "smile"));
     }
 }

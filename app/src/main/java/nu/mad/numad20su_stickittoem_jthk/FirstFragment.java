@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import nu.mad.numad20su_stickittoem_jthk.models.StickerUserPair;
 import nu.mad.numad20su_stickittoem_jthk.models.User;
 
 public class FirstFragment extends Fragment {
@@ -30,6 +32,7 @@ public class FirstFragment extends Fragment {
     private TextView numberSentTextView;
     private DatabaseReference databaseReference;
     private User user;
+    private EditText usernameToSendTo;
 
     @Override
     public View onCreateView(
@@ -45,6 +48,7 @@ public class FirstFragment extends Fragment {
 
         usernameTextView = view.findViewById(R.id.textview_first);
         numberSentTextView = view.findViewById(R.id.firstfragment_numbersent_textview);
+        usernameToSendTo = view.findViewById(R.id.usernameToSendToTextInput);
         
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -130,7 +134,43 @@ public class FirstFragment extends Fragment {
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
+
+        // set onClickListeners for sticker buttons
+        view.findViewById(R.id.smile_button).setOnClickListener(sendStickerListener);
+        view.findViewById(R.id.laugh_button).setOnClickListener(sendStickerListener);
+        view.findViewById(R.id.sad_button).setOnClickListener(sendStickerListener);
     }
+
+    // make a listener in the class so we can use one onClick, instead of having to define it
+    // multiple times. Append StickerUserPair objects to the user's StickerUserPair arrays.
+    private View.OnClickListener sendStickerListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            StickerUserPair stickerUserPair =
+                    new StickerUserPair(user.username, "");
+            switch (view.getId()) {
+                case R.id.smile_button:
+                    stickerUserPair.stickerName = "smile";
+
+                    // use push() when appending to an array
+                    databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
+                            .child("stickerUserPairs").push().setValue(stickerUserPair);
+                    break;
+                case R.id.laugh_button:
+                    stickerUserPair.stickerName = "laugh";
+
+                    databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
+                            .child("stickerUserPairs").push().setValue(stickerUserPair);
+                    break;
+                case R.id.sad_button:
+                    stickerUserPair.stickerName = "sad";
+
+                    databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
+                            .child("stickerUserPairs").push().setValue(stickerUserPair);
+                    break;
+            }
+        }
+    };
 
     private void registerUser(String token) {
         DialogFragment dialogFragment = new RegisterDialogFragment(token);

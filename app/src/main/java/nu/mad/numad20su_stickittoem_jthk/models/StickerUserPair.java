@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class StickerUserPair {
 
-    public String username;
+    public String sentByUsername;
     public String stickerName;
 
     public StickerUserPair() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public StickerUserPair(String username, String stickerName) {
-        this.username = username;
+    public StickerUserPair(String sentByUsername, String stickerName) {
+        this.sentByUsername = sentByUsername;
         this.stickerName = stickerName;
     }
 }
