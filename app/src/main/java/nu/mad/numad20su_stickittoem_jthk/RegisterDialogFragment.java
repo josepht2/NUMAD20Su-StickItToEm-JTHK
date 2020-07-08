@@ -59,6 +59,7 @@ public class RegisterDialogFragment extends DialogFragment {
             @Override
             public void onShow(DialogInterface dialogInterface) {
                 Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
+
                 button.setOnClickListener(new View.OnClickListener() {
 
                     @Override
@@ -88,6 +89,9 @@ public class RegisterDialogFragment extends DialogFragment {
                 });
             }
         });
+
+        // resource: https://stackoverflow.com/questions/13401632/android-app-crashed-on-screen-rotation-with-dialog-open
+        setRetainInstance(true);
         return alertDialog;
     }
 }
