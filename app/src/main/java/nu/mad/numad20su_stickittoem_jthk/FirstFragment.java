@@ -236,7 +236,19 @@ public class FirstFragment extends Fragment {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             String deviceToSendTo = snapshot.getValue().toString();
-                                            sendStickerToDevice(deviceToSendTo, stickerUserPair.stickerName);
+
+                                            final String smileyEmoji;
+
+                                            // assign emoji
+                                            if (stickerUserPair.stickerName.equals("smile")) {
+                                                smileyEmoji = "🙂";
+                                            } else if (stickerUserPair.stickerName.equals("laugh")) {
+                                                smileyEmoji = "😀";
+                                            } else {
+                                                smileyEmoji = "🙁";
+                                            }
+
+                                            sendStickerToDevice(deviceToSendTo, smileyEmoji + " from " + user.username);
                                         }
 
                                         @Override
@@ -273,7 +285,7 @@ public class FirstFragment extends Fragment {
         dialogFragment.show(getParentFragmentManager(), "RegisterDialogFragment");
     }
 
-    private void sendStickerToDevice(final String deviceToSendTo, final String sticker) {
+    private void sendStickerToDevice(final String deviceToSendTo, final String stickerAndUserFrom) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -282,13 +294,13 @@ public class FirstFragment extends Fragment {
                 JSONObject jData = new JSONObject();
 
                 try {
-                    jNotification.put("title", "New Sticker");
-                    jNotification.put("body", sticker);
+                    jNotification.put("title", "New Sticker from " + user.username);
+                    jNotification.put("body", stickerAndUserFrom);
                     jNotification.put("sound", "default");
                     jNotification.put("badge", "1");
 
-                    jData.put("title", "New Sticker");
-                    jData.put("content", sticker);
+                    jData.put("title", "New Sticker from " + user.username);
+                    jData.put("content", stickerAndUserFrom);
 
                     jPayload.put("to", deviceToSendTo);
                     jPayload.put("priority", "high");
