@@ -1,6 +1,5 @@
 package nu.mad.numad20su_stickittoem_jthk.models;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class User {

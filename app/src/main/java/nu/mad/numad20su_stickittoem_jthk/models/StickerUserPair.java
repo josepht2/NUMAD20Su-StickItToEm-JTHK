@@ -1,7 +1,5 @@
 package nu.mad.numad20su_stickittoem_jthk.models;
 
-import java.util.ArrayList;
-
 public class StickerUserPair {
 
     public String sentByUsername;
