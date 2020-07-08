@@ -3,6 +3,7 @@ package nu.mad.numad20su_stickittoem_jthk;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -275,10 +276,32 @@ public class FirstFragment extends Fragment {
                     OutputStream outputStream = connection.getOutputStream();
                     outputStream.write(jPayload.toString().getBytes());
                     outputStream.close();
+
+                    InputStream inputStream = connection.getInputStream();
+                    final String response = convertStreamToString(inputStream);
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.e(MainActivity.class.getSimpleName(), "run: " + response);
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    /**
+     * Helper function
+     *
+     * @param inputStream
+     * @return
+     */
+    private String convertStreamToString(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
+        return scanner.hasNext() ? scanner.next().replace(",", ",\n") : "";
     }
 }
