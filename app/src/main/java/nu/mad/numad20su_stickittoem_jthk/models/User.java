@@ -22,6 +22,6 @@ public class User {
         this.stickerUserPairs = new HashMap<>();
 
         // add a welcome smiley
-        this.stickerUserPairs.put("FirstTest", new StickerUserPair("Welcome From Devs!", "smile"));
+        this.stickerUserPairs.put("first-welcome", new StickerUserPair("Welcome From Devs!", "smile"));
     }
 }

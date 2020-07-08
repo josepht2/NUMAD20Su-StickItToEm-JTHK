@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,7 +44,7 @@ public class FirstFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_first, container, false);
     }
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         usernameTextView = view.findViewById(R.id.textview_first);
@@ -116,6 +117,39 @@ public class FirstFragment extends Fragment {
                                                         }
                                                     }
                                             );
+
+                                            // experimental for getting latest sticker user pair....
+                                            databaseReference.child("users").child(user.username).child("stickerUserPairs").addChildEventListener(
+                                                    new ChildEventListener() {
+                                                        @Override
+                                                        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                                            StickerUserPair addedStickerUserPair = snapshot.getValue(StickerUserPair.class);
+                                                            if (addedStickerUserPair != null) {
+                                                                Snackbar.make(view, "You got a " + addedStickerUserPair.stickerName + " from " + addedStickerUserPair.sentByUsername, Snackbar.LENGTH_LONG)
+                                                                        .setAction("Action", null).show();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
                                         }
                                     }
 
@@ -171,6 +205,10 @@ public class FirstFragment extends Fragment {
                             .child("stickerUserPairs").push().setValue(stickerUserPair);
                     break;
             }
+
+            // update number of stickers sent
+            databaseReference.child("users").child(user.username)
+                    .child("numberOfStickersSent").setValue(user.numberOfStickersSent + 1);
         }
     };
 
