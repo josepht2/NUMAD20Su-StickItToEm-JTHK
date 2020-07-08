@@ -192,49 +192,78 @@ public class FirstFragment extends Fragment {
     // multiple times. Append StickerUserPair objects to the user's StickerUserPair arrays.
     private View.OnClickListener sendStickerListener = new View.OnClickListener() {
         @Override
-        public void onClick(View view) {
+        public void onClick(final View view) {
             final StickerUserPair stickerUserPair =
                     new StickerUserPair(user.username, "");
-            switch (view.getId()) {
-                case R.id.smile_button:
-                    stickerUserPair.stickerName = "smile";
 
-                    // use push() when appending to an array
-                    databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
-                            .child("stickerUserPairs").push().setValue(stickerUserPair);
-                    break;
-                case R.id.laugh_button:
-                    stickerUserPair.stickerName = "laugh";
+            // only start the sending flow if they enter a username
+            if (usernameToSendTo.getText().length() > 0) {
 
-                    databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
-                            .child("stickerUserPairs").push().setValue(stickerUserPair);
-                    break;
-                case R.id.sad_button:
-                    stickerUserPair.stickerName = "sad";
+                // check if user exists, before sending data
+                databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.getValue() != null) {
 
-                    databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
-                            .child("stickerUserPairs").push().setValue(stickerUserPair);
-                    break;
+                                    // if user exists
+                                    switch (view.getId()) {
+                                        case R.id.smile_button:
+                                            stickerUserPair.stickerName = "smile";
+
+                                            // use push() when appending to an array
+                                            databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
+                                                    .child("stickerUserPairs").push().setValue(stickerUserPair);
+                                            break;
+                                        case R.id.laugh_button:
+                                            stickerUserPair.stickerName = "laugh";
+
+                                            databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
+                                                    .child("stickerUserPairs").push().setValue(stickerUserPair);
+                                            break;
+                                        case R.id.sad_button:
+                                            stickerUserPair.stickerName = "sad";
+
+                                            databaseReference.child("users").child(String.valueOf(usernameToSendTo.getText()))
+                                                    .child("stickerUserPairs").push().setValue(stickerUserPair);
+                                            break;
+                                    }
+
+                                    databaseReference.child("users")
+                                            .child(String.valueOf(usernameToSendTo.getText()))
+                                            .child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String deviceToSendTo = snapshot.getValue().toString();
+                                            sendStickerToDevice(deviceToSendTo, stickerUserPair.stickerName);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                                    // update number of stickers sent
+                                    databaseReference.child("users").child(user.username)
+                                            .child("numberOfStickersSent").setValue(user.numberOfStickersSent + 1);
+                                } else {
+                                    // notify user that they entered an invalid username
+                                    Snackbar.make(view, "Sorry, this user doesn't exist, please enter a different username", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+            } else {
+                // notify user that they need to enter a username
+                Snackbar.make(view, "Sorry, please enter a username", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
-
-            databaseReference.child("users")
-                    .child(String.valueOf(usernameToSendTo.getText()))
-                    .child("token").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String deviceToSendTo = snapshot.getValue().toString();
-                    sendStickerToDevice(deviceToSendTo, stickerUserPair.stickerName);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-            // update number of stickers sent
-            databaseReference.child("users").child(user.username)
-                    .child("numberOfStickersSent").setValue(user.numberOfStickersSent + 1);
         }
     };
 
